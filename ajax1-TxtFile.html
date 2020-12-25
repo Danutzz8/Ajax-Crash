@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 1 - Text File</title>
+</head>
+<body>
+    <button id="button">Get Text File</button>
+    <div id="text"></div>
+
+    <script>
+        // Create event listener
+        document.querySelector('#button').addEventListener('click', loadText);
+
+        function loadText() {
+            //  Create XHR Object
+            let xhr = new XMLHttpRequest();
+            // OPEN - Type , url/file. async
+            // console.log(xhr); is an object
+            xhr.open('GET', 'sample.txt', true);
+
+               // console.log('READYSTATE:', xhr.readyState);  // this is on Lv 1  (srver connection established)
+
+               // Optional - used for loaders --wayting wheels
+               
+               xhr.onprogress = function() {
+                // console.log('READYSTATE:', xhr.readyState);   //  Lv 3--(processing request) 
+               }
+            
+            xhr.onload = function() {
+                // console.log('READYSTATE -after on load-:', xhr.readyState);     // we can see that is at Lv 4 already (request finnished and response is ready)
+                if(this.status == 200) {
+                    //console.log(this.responseText);
+                    document.querySelector('#text').innerHTML = `<h4>${this.responseText}</h4>`;
+                } else if (this.status == 404) {
+                    document.querySelector('#text').innerHTML = `<h1>ERROR:${this.responseText}</h1>`;
+                }
+            }
+
+            xhr.onerror = function() {
+                console.log('error');
+            }
+
+            // Sends request
+            xhr.send();
+        }
+
+    </script>
+</body>
+</html>
